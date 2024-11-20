@@ -1,0 +1,64 @@
+classDiagram
+    class Ferme {
+        -id : Integer
+        -nom : String
+        -localisation : String
+        -superficie : Real
+        -dateCreation : Date
+        +calculerSuperficieTotaleChamps() : Real
+        +verifierSuperficieDisponible(Real) : Boolean
+    }
+
+    class Champ {
+        -id : Integer
+        -nom : String
+        -superficie : Real
+        +verifierDensiteArbres() : Boolean
+        +calculerCapaciteArbres() : Integer
+    }
+
+    class Arbre {
+        -id : Integer
+        -datePlantation : Date
+        +calculerProductivite() : Real
+        +estProductif() : Boolean
+        +calculerAge() : Integer
+        +verifierPeriodePlantation() : Boolean
+    }
+
+    class Recolte {
+        -id : Integer
+        -saison : Saison
+        -dateRecolte : Date
+        -quantiteTotale : Real
+        +calculerQuantiteTotale() : Real
+        +verifierSaison() : Boolean
+    }
+
+    class RecolteDetail {
+        -id : Integer
+        -quantite : Real
+        +verifierQuantite() : Boolean
+    }
+
+    class Vente {
+        -id : Integer
+        -dateVente : Date
+        -prixUnitaire : Real
+        -client : String
+        +calculerRevenu() : Real
+    }
+
+    class Saison {
+        <<enumeration>>
+        HIVER
+        PRINTEMPS
+        ETE
+        AUTOMNE
+    }
+
+    Ferme "1" -- "0..*" Champ
+    Champ "1" -- "0..*" Arbre
+    Arbre "1" -- "0..*" RecolteDetail
+    Recolte "1" -- "0..*" RecolteDetail
+    Recolte "1" -- "0..*" Vente
