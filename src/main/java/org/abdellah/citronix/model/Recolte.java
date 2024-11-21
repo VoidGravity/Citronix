@@ -1,9 +1,6 @@
 package org.abdellah.citronix.model;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,24 +9,29 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
-
-
 @Entity
-@Table(name = "arbres")
+@Table(name = "recoltes")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Arbre {
+public class Recolte {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate datePlantation;
+    private LocalDate dateRecolte;
 
-    @ManyToOne
-    @JoinColumn(name = "champ_id")
-    private Champ champ;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Saison season;
 
-    @OneToMany(mappedBy = "arbre")
+    @NotNull
+    @Positive
+    private double quantiteTotale;
+
+    @OneToMany(mappedBy = "recolte", cascade = CascadeType.ALL)
     private List<RecolteDetail> recolteDetails;
+
+    @OneToMany(mappedBy = "recolte")
+    private List<Vente> ventes;
 }

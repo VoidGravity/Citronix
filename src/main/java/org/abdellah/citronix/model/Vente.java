@@ -1,35 +1,38 @@
 package org.abdellah.citronix.model;
 
+
+
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
-
-
-
 @Entity
-@Table(name = "arbres")
+@Table(name = "ventes")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Arbre {
+public class Vente {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private LocalDate datePlantation;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
+    @NotNull
+    private LocalDate dateVente;
+
+    @Positive
+    private Double prixUnitaire;
+
+    @NotBlank
+    private String client;
 
     @ManyToOne
-    @JoinColumn(name = "champ_id")
-    private Champ champ;
-
-    @OneToMany(mappedBy = "arbre")
-    private List<RecolteDetail> recolteDetails;
+    private Recolte recolte;
 }
