@@ -3,6 +3,8 @@ package org.abdellah.citronix.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.abdellah.citronix.DTO.request.ChampRequestDTO;
 import org.abdellah.citronix.DTO.response.ChampResponseDTO;
+import org.abdellah.citronix.exception.BusinessException;
+import org.abdellah.citronix.exception.ResourceNotFoundException;
 import org.abdellah.citronix.mapper.ChampMapper;
 import org.abdellah.citronix.model.Champ;
 import org.abdellah.citronix.model.Ferme;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -78,17 +81,14 @@ public class ChampServiceImpl implements ChampService {
     }
 
     private void validateChampCreation(ChampRequestDTO dto, Ferme ferme) {
-        // Minimum size check
         if (dto.superficie() < 0.1) {
             throw new BusinessException("La superficie minimale d'un champ est de 0.1 hectare");
         }
 
-        // Maximum fields per farm check
         if (champRepository.countByFermeId(dto.fermeId()) >= 10) {
             throw new BusinessException("Une ferme ne peut pas avoir plus de 10 champs");
         }
 
-        // Maximum total area check
         double totalSuperficie = champRepository.sumSuperficieByFermeId(dto.fermeId());
         if ((totalSuperficie + dto.superficie()) > ferme.getSuperficie() * 0.5) {
             throw new BusinessException("La superficie totale des champs ne peut pas dépasser 50% de la superficie de la ferme");
@@ -107,4 +107,4 @@ public class ChampServiceImpl implements ChampService {
             throw new BusinessException("La superficie totale des champs ne peut pas dépasser 50% de la superficie de la ferme");
         }
     }
-}}
+}

@@ -1,7 +1,5 @@
 package org.abdellah.citronix.service.impl;
 
-package org.abdellah.citronix.service.impl;
-
 import lombok.RequiredArgsConstructor;
 import org.abdellah.citronix.model.Vente;
 import org.abdellah.citronix.DTO.request.VenteRequestDTO;
