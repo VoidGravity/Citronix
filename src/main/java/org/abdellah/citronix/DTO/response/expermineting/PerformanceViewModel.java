@@ -1,4 +1,4 @@
-package org.abdellah.citronix.DTO.response;
+package org.abdellah.citronix.DTO.response.expermineting;
 
 
 import lombok.Builder;

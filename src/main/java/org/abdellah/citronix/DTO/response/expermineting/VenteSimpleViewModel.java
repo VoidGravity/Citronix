@@ -1,4 +1,4 @@
-package org.abdellah.citronix.DTO.request;
+package org.abdellah.citronix.DTO.response.expermineting;
 
 
 import lombok.Builder;
@@ -6,14 +6,11 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
-
 @Data
 @Builder
-public class VenteDTO {
+public class VenteSimpleViewModel {
     private Integer id;
     private LocalDate dateVente;
-    private Double prixUnitaire;
     private String client;
-    private Long recolteId;
     private Double revenu;
 }

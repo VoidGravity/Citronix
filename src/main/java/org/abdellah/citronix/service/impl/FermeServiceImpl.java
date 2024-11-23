@@ -1,7 +1,7 @@
 package org.abdellah.citronix.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.abdellah.citronix.DTO.response.FermeViewModel;
+import org.abdellah.citronix.DTO.response.expermineting.FermeViewModel;
 import org.abdellah.citronix.model.Ferme;
 import org.abdellah.citronix.repository.FermeRepository;
 import org.abdellah.citronix.service.FermeService;

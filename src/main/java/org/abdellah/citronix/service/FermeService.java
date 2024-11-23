@@ -1,8 +1,8 @@
 package org.abdellah.citronix.service;
 
-import org.abdellah.citronix.DTO.response.DashboardViewModel;
-import org.abdellah.citronix.DTO.response.FermeViewModel;
-import org.abdellah.citronix.DTO.response.StatistiquesChampViewModel;
+import org.abdellah.citronix.DTO.response.expermineting.DashboardViewModel;
+import org.abdellah.citronix.DTO.response.expermineting.FermeViewModel;
+import org.abdellah.citronix.DTO.response.expermineting.StatistiquesChampViewModel;
 
 import java.util.List;
 

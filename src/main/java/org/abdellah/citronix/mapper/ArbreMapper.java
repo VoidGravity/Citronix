@@ -1,7 +1,7 @@
 package org.abdellah.citronix.mapper;
 
 import org.abdellah.citronix.DTO.request.ArbreRequestDTO;
-import org.abdellah.citronix.DTO.response.ArbreResponseDTO;
+import org.abdellah.citronix.DTO.response.expermineting.ArbreResponseDTO;
 import org.abdellah.citronix.model.Arbre;
 import org.abdellah.citronix.model.Champ;
 import org.mapstruct.*;
