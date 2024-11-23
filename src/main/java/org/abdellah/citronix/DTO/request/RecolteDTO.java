@@ -1,9 +1,7 @@
-package org.abdellah.citronix.DTO;
+package org.abdellah.citronix.DTO.request;
 
 import lombok.Builder;
 import lombok.Data;
-import org.abdellah.citronix.DTO.RecolteDetailDTO;
-import org.abdellah.citronix.DTO.VenteDTO;
 import org.abdellah.citronix.model.Saison;
 
 import java.time.LocalDate;

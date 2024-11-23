@@ -1,4 +1,4 @@
-package org.abdellah.citronix.DTO;
+package org.abdellah.citronix.DTO.request;
 
 
 import lombok.Builder;
