@@ -10,4 +10,6 @@ public interface ChampService {
     ChampResponseDTO updateChamp(Long id, ChampRequestDTO dto);
     void deleteChamp(Long id);
     List<ChampResponseDTO> getChampsByFermeId(Long fermeId);
+    ChampResponseDTO getChampById(Long id);
+    int calculateCapaciteArbres(Long id);
 }

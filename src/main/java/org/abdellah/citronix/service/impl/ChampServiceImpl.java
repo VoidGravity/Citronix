@@ -12,6 +12,8 @@ import org.abdellah.citronix.service.ChampService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -25,22 +27,84 @@ public class ChampServiceImpl implements ChampService {
         Ferme ferme = fermeRepository.findById(dto.fermeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Ferme", dto.fermeId()));
 
-        // Verify field constraints
-        if (dto.superficie() < 0.1) {
-            throw new BusinessException("La superficie minimale d'un champ est de 0.1 hectare");
-        }
-
-        if (champRepository.countByFermeId(dto.fermeId()) >= 10) {
-            throw new BusinessException("Une ferme ne peut pas avoir plus de 10 champs");
-        }
-
-        double totalSuperficie = champRepository.sumSuperficieByFermeId(dto.fermeId());
-        if ((totalSuperficie + dto.superficie()) > ferme.getSuperficie() * 0.5) {
-            throw new BusinessException("La superficie totale des champs ne peut pas dépasser 50% de la superficie de la ferme");
-        }
+        validateChampCreation(dto, ferme);
 
         Champ champ = champMapper.toEntity(dto);
         return champMapper.toDTO(champRepository.save(champ));
     }
 
-}
+    @Override
+    public ChampResponseDTO updateChamp(Long id, ChampRequestDTO dto) {
+        Champ existingChamp = champRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Champ", id));
+
+        validateChampUpdate(dto, existingChamp);
+
+        champMapper.updateEntityFromDTO(dto, existingChamp);
+        return champMapper.toDTO(champRepository.save(existingChamp));
+    }
+
+    @Override
+    public void deleteChamp(Long id) {
+        if (!champRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Champ", id);
+        }
+        champRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ChampResponseDTO> getChampsByFermeId(Long fermeId) {
+        return champRepository.findByFermeId(fermeId).stream()
+                .map(champMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ChampResponseDTO getChampById(Long id) {
+        return champRepository.findById(id)
+                .map(champMapper::toDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("Champ", id));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public int calculateCapaciteArbres(Long id) {
+        Champ champ = champRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Champ", id));
+
+        return (int) (champ.getSuperficie() * 100); // 100 arbres par hectare
+    }
+
+    private void validateChampCreation(ChampRequestDTO dto, Ferme ferme) {
+        // Minimum size check
+        if (dto.superficie() < 0.1) {
+            throw new BusinessException("La superficie minimale d'un champ est de 0.1 hectare");
+        }
+
+        // Maximum fields per farm check
+        if (champRepository.countByFermeId(dto.fermeId()) >= 10) {
+            throw new BusinessException("Une ferme ne peut pas avoir plus de 10 champs");
+        }
+
+        // Maximum total area check
+        double totalSuperficie = champRepository.sumSuperficieByFermeId(dto.fermeId());
+        if ((totalSuperficie + dto.superficie()) > ferme.getSuperficie() * 0.5) {
+            throw new BusinessException("La superficie totale des champs ne peut pas dépasser 50% de la superficie de la ferme");
+        }
+    }
+
+    private void validateChampUpdate(ChampRequestDTO dto, Champ existingChamp) {
+        if (dto.superficie() < 0.1) {
+            throw new BusinessException("La superficie minimale d'un champ est de 0.1 hectare");
+        }
+
+        double totalSuperficieAutresChamps = champRepository.sumSuperficieByFermeIdExcludingChampId(
+                existingChamp.getFerme().getId(), existingChamp.getId());
+
+        if ((totalSuperficieAutresChamps + dto.superficie()) > existingChamp.getFerme().getSuperficie() * 0.5) {
+            throw new BusinessException("La superficie totale des champs ne peut pas dépasser 50% de la superficie de la ferme");
+        }
+    }
+}}
