@@ -29,6 +29,9 @@ public class Arbre {
     @ManyToOne
     @JoinColumn(name = "champ_id")
     private Champ champ;
+    
+    @Enumerated(EnumType.STRING)
+    private ArbreStatus status;
 
     @OneToMany(mappedBy = "arbre")
     private List<RecolteDetail> recolteDetails;
