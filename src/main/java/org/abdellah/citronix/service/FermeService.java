@@ -1,19 +1,14 @@
 package org.abdellah.citronix.service;
 
-import org.abdellah.citronix.DTO.response.expermineting.DashboardViewModel;
-import org.abdellah.citronix.DTO.response.expermineting.FermeViewModel;
-import org.abdellah.citronix.DTO.response.expermineting.StatistiquesChampViewModel;
-
-import java.util.List;
-
+import org.abdellah.citronix.DTO.request.FermeRequestDTO;
+import org.abdellah.citronix.DTO.response.FermeResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface FermeService {
-    // Use ViewModels directly instead of DTOs/Response objects
-    List<FermeViewModel> getAllFermes();
-    FermeViewModel getFermeById(Long id);
-    FermeViewModel createFerme(FermeViewModel fermeVM);
-    FermeViewModel updateFerme(Long id, FermeViewModel fermeVM);
+    FermeResponseDTO createFerme(FermeRequestDTO dto);
+    FermeResponseDTO updateFerme(Long id, FermeRequestDTO dto);
     void deleteFerme(Long id);
-    DashboardViewModel getDashboard(Long fermeId);
-    StatistiquesChampViewModel getStatistics(Long fermeId);
+    List<FermeResponseDTO> getAllFermes();
+    FermeResponseDTO getFermeById(Long id);
 }
