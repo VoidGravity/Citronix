@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.abdellah.citronix.model.Vente;
 import org.abdellah.citronix.DTO.request.VenteRequestDTO;
 import org.abdellah.citronix.DTO.response.VenteResponseDTO;
-import org.abdellah.citronix.exception.ResourceNotFoundException;
+import org.abdellah.citronix.exception.*;
 import org.abdellah.citronix.mapper.VenteMapper;
 import org.abdellah.citronix.repository.VenteRepository;
 import org.abdellah.citronix.service.VenteService;
