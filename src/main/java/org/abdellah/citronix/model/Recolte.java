@@ -23,7 +23,8 @@ public class Recolte {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private Saison season;
+    private Saison saison;
+
 
     @NotNull
     @Positive
@@ -34,4 +35,5 @@ public class Recolte {
 
     @OneToMany(mappedBy = "recolte")
     private List<Vente> ventes;
+
 }

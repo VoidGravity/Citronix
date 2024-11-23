@@ -10,8 +10,5 @@ import java.util.List;
 
 @Repository
 public interface RecolteRepository extends JpaRepository<Recolte, Long> {
-    List<Recolte> findByChampId(Long champId);
     List<Recolte> findBySaison(Saison saison);
-    boolean existsByChampIdAndSaison(Long champId, Saison saison);
-
 }

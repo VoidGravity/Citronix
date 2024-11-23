@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ArbreService {
     ArbreResponseDTO createArbre(ArbreRequestDTO dto);
+    int calculateAge(Long id);
+    int countArbresByChamp(Long champId);
 
     ArbreResponseDTO updateArbre(Long id, ArbreRequestDTO dto);
     void deleteArbre(Long id);

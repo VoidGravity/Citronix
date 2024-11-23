@@ -28,6 +28,10 @@ public class ArbreServiceImpl implements ArbreService {
     private final ChampRepository champRepository;
     private final ArbreMapper arbreMapper;
 
+
+    private int getAge(LocalDate datePlantation) {
+        return Period.between(datePlantation, LocalDate.now()).getYears();
+    }
     @Override
     public ArbreResponseDTO createArbre(ArbreRequestDTO dto) {
         Champ champ = champRepository.findById(dto.champId())
@@ -54,8 +58,8 @@ public class ArbreServiceImpl implements ArbreService {
         Arbre existingArbre = arbreRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Arbre", id));
 
-        // Verify if the tree can be modified (age < 20 years)
-        if (calculateAge(existingArbre.getDatePlantation()) >= 20) {
+
+        if (getAge(existingArbre.getDatePlantation()) >= 20) {
             throw new BusinessException("Un arbre de plus de 20 ans ne peut pas être modifié");
         }
 
@@ -87,13 +91,14 @@ public class ArbreServiceImpl implements ArbreService {
                 .orElseThrow(() -> new ResourceNotFoundException("Arbre", id));
     }
 
+
     @Override
     @Transactional(readOnly = true)
     public double calculateProductivite(Long id) {
         Arbre arbre = arbreRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Arbre", id));
 
-        int age = calculateAge(arbre.getDatePlantation());
+        int age = getAge(arbre.getDatePlantation());
 
         if (age >= 20) return 0;
         if (age < 3) return 2.5;
@@ -101,7 +106,20 @@ public class ArbreServiceImpl implements ArbreService {
         return 20.0;
     }
 
-    private int calculateAge(LocalDate datePlantation) {
-        return Period.between(datePlantation, LocalDate.now()).getYears();
+//    private int calculateAge(LocalDate datePlantation) {
+//        return Period.between(datePlantation, LocalDate.now()).getYears();
+//    }
+    @Override
+    @Transactional(readOnly = true)
+    public int calculateAge(Long id) {
+        Arbre arbre = arbreRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Arbre", id));
+        return getAge(arbre.getDatePlantation());
     }
+    @Override
+    @Transactional(readOnly = true)
+    public int countArbresByChamp(Long champId) {
+        return arbreRepository.countByChampId(champId);
+    }
+
 }

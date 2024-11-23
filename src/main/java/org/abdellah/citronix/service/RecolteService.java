@@ -10,7 +10,9 @@ public interface RecolteService {
     RecolteResponseDTO createRecolte(RecolteRequestDTO dto);
     RecolteResponseDTO updateRecolte(Long id, RecolteRequestDTO dto);
     void deleteRecolte(Long id);
-    List<RecolteResponseDTO> getRecoltesByChampId(Long champId);
+//    List<RecolteResponseDTO> getRecoltesByChampId(Long champId);
     RecolteResponseDTO getRecolteById(Long id);
     List<RecolteResponseDTO> getRecolteBySaison(Saison saison);
+    double calculateQuantiteTotale(Long id);
+
 }

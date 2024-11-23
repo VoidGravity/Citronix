@@ -1,12 +1,13 @@
 package org.abdellah.citronix.mapper;
 
-import org.abdellah.citronix.DTO.request.ArbreRequestDTO;
-import org.abdellah.citronix.DTO.response.ArbreResponseDTO;
 import org.abdellah.citronix.model.Arbre;
 import org.abdellah.citronix.model.Champ;
+import org.abdellah.citronix.DTO.request.ArbreRequestDTO;
+import org.abdellah.citronix.DTO.response.ArbreResponseDTO;
+import org.abdellah.citronix.util.ArbreUtil;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", imports = {ArbreUtil.class})  // Added imports
 public interface ArbreMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", ignore = true)
@@ -15,12 +16,12 @@ public interface ArbreMapper {
 
     @Named("champIdToChamp")
     default Champ champIdToChamp(Long champId) {
-        return Champ.builder().id(champId).build();
+        return champId != null ? Champ.builder().id(champId).build() : null;
     }
 
-    @Mapping(target = "age", expression = "java(arbre.calculateAge())")
-    @Mapping(target = "productiviteParSaison",
-            expression = "java(arbre.getStatus().getProductionParSaison())")
+    @Mapping(target = "age", expression = "java(org.abdellah.citronix.util.ArbreUtil.calculateAge(arbre.getDatePlantation()))")  // Use fully qualified name
+    @Mapping(target = "productiviteParSaison", expression = "java(arbre.getStatus().getProductionParSaison())")
+    @Mapping(target = "champId", expression = "java(arbre.getChamp() != null ? arbre.getChamp().getId() : null)")
     ArbreResponseDTO toDTO(Arbre arbre);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
