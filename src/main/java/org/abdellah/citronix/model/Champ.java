@@ -12,11 +12,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "champ")
-@RequiredArgsConstructor
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Champ {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

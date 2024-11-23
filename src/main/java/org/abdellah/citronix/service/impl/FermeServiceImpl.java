@@ -3,6 +3,7 @@ package org.abdellah.citronix.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.abdellah.citronix.DTO.request.FermeRequestDTO;
 import org.abdellah.citronix.DTO.response.FermeResponseDTO;
+import org.abdellah.citronix.exception.ResourceNotFoundException;
 import org.abdellah.citronix.mapper.FermeMapper;
 import org.abdellah.citronix.model.Ferme;
 import org.abdellah.citronix.repository.ChampRepository;
@@ -10,6 +11,9 @@ import org.abdellah.citronix.repository.FermeRepository;
 import org.abdellah.citronix.service.FermeService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

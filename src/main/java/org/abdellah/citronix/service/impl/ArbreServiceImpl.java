@@ -33,13 +33,11 @@ public class ArbreServiceImpl implements ArbreService {
         Champ champ = champRepository.findById(dto.champId())
                 .orElseThrow(() -> new ResourceNotFoundException("Champ", dto.champId()));
 
-        // Verify planting period
         Month plantingMonth = dto.datePlantation().getMonth();
         if (plantingMonth != Month.MARCH && plantingMonth != Month.APRIL && plantingMonth != Month.MAY) {
             throw new BusinessException("Les arbres ne peuvent être plantés qu'entre mars et mai");
         }
 
-        // Verify field capacity
         int currentTrees = arbreRepository.countByChampId(dto.champId());
         int maxTrees = (int) (champ.getSuperficie() * 100); // 100 trees per hectare
         if (currentTrees >= maxTrees) {
@@ -47,6 +45,7 @@ public class ArbreServiceImpl implements ArbreService {
         }
 
         Arbre arbre = arbreMapper.toEntity(dto);
+
         return arbreMapper.toDTO(arbreRepository.save(arbre));
     }
 

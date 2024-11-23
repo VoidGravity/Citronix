@@ -2,11 +2,14 @@ package org.abdellah.citronix.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.abdellah.citronix.DTO.request.RecolteRequestDTO;
-import org.abdellah.citronix.DTO.response.expermineting.RecolteResponseDTO;
+import org.abdellah.citronix.DTO.response.RecolteResponseDTO;
+import org.abdellah.citronix.exception.BusinessException;
+import org.abdellah.citronix.exception.ResourceNotFoundException;
 import org.abdellah.citronix.mapper.RecolteMapper;
 import org.abdellah.citronix.model.Recolte;
 import org.abdellah.citronix.model.Saison;
 import org.abdellah.citronix.repository.ChampRepository;
+import org.abdellah.citronix.repository.RecolteRepository;
 import org.abdellah.citronix.service.RecolteService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,18 +78,18 @@ public class RecolteServiceImpl implements RecolteService {
     }
 
     private void validateRecolteCreation(RecolteRequestDTO dto) {
-        // Verify champ exists
         champRepository.findById(dto.champId())
                 .orElseThrow(() -> new ResourceNotFoundException("Champ", dto.champId()));
 
-        // Verify one harvest per season per field
         if (recolteRepository.existsByChampIdAndSaison(dto.champId(), dto.saison())) {
             throw new BusinessException("Une seule récolte par saison est autorisée pour un champ");
         }
     }
 
     private void validateRecolteUpdate(RecolteRequestDTO dto, Recolte existingRecolte) {
+
         if (!existingRecolte.getChamp().getId().equals(dto.champId()) ||
+
                 !existingRecolte.getSaison().equals(dto.saison())) {
             if (recolteRepository.existsByChampIdAndSaison(dto.champId(), dto.saison())) {
                 throw new BusinessException("Une seule récolte par saison est autorisée pour un champ");

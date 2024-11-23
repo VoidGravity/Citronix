@@ -1,7 +1,7 @@
 package org.abdellah.citronix.mapper;
 
 import org.abdellah.citronix.DTO.request.VenteRequestDTO;
-import org.abdellah.citronix.DTO.response.expermineting.VenteResponseDTO;
+import org.abdellah.citronix.DTO.response.VenteResponseDTO;
 import org.abdellah.citronix.model.Vente;
 import org.abdellah.citronix.model.Recolte;
 import org.mapstruct.*;
