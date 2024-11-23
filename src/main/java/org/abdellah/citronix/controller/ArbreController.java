@@ -1,42 +1,68 @@
 package org.abdellah.citronix.controller;
 
-
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.abdellah.citronix.model.Arbre;
+import org.abdellah.citronix.DTO.request.ArbreRequestDTO;
+import org.abdellah.citronix.DTO.response.ArbreResponseDTO;
 import org.abdellah.citronix.service.ArbreService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/arbres")
+@RequestMapping("/api/v1/arbres")
 @RequiredArgsConstructor
 public class ArbreController {
     private final ArbreService arbreService;
 
-    //read
-    @GetMapping("/get")
-    public ResponseEntity<List<Arbre>> getAllArbres(){
-        return ResponseEntity.ok(arbreService.getAllArbres());
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ArbreResponseDTO createArbre(@Valid @RequestBody ArbreRequestDTO request) {
+        return arbreService.createArbre(request);
     }
-    //update
+
     @PutMapping("/{id}")
-    public ResponseEntity<Arbre> updateArbre(@PathVariable Long id, @RequestBody Arbre arbre){
-        arbre.setId(id);
-        return ResponseEntity.ok(arbreService.updateArbre(arbre));
+    @ResponseStatus(HttpStatus.OK)
+    public ArbreResponseDTO updateArbre(
+            @PathVariable Long id,
+            @Valid @RequestBody ArbreRequestDTO request) {
+        return arbreService.updateArbre(id, request);
     }
-    //create
-    @PostMapping("/save")
-    public ResponseEntity<Arbre> saveArbre(@RequestBody Arbre arbre){
-        return ResponseEntity.ok(arbreService.updateArbre(arbre));
-    }
-    //delate
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Arbre> delateArbre(@PathVariable Long id){
-
-        return ResponseEntity.noContent().build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteArbre(@PathVariable Long id) {
+        arbreService.deleteArbre(id);
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ArbreResponseDTO getArbreById(@PathVariable Long id) {
+        return arbreService.getArbreById(id);
+    }
 
+    @GetMapping("/champ/{champId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ArbreResponseDTO> getArbresByChamp(@PathVariable Long champId) {
+        return arbreService.getArbresByChampId(champId);
+    }
+
+    @GetMapping("/{id}/productivite")
+    @ResponseStatus(HttpStatus.OK)
+    public double getProductivite(@PathVariable Long id) {
+        return arbreService.calculateProductivite(id);
+    }
+
+    @GetMapping("/{id}/age")
+    @ResponseStatus(HttpStatus.OK)
+    public int getAge(@PathVariable Long id) {
+        return arbreService.calculateAge(id);
+    }
+
+    @GetMapping("/champ/{champId}/count")
+    @ResponseStatus(HttpStatus.OK)
+    public int getArbreCountByChamp(@PathVariable Long champId) {
+        return arbreService.countArbresByChamp(champId);
+    }
 }
