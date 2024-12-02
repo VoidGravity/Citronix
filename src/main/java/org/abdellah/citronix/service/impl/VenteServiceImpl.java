@@ -28,13 +28,51 @@ public class VenteServiceImpl implements VenteService {
         return venteMapper.toDTO(venteRepository.save(vente));
     }
 
+    @Transactional
+    public VenteResponseDTO updateVente(Long id, VenteRequestDTO request) {
+        venteValidator.validate(request);
+        Vente vente = venteRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Vente", id));
+        venteMapper.updateEntityFromDTO(request, vente);
+        return venteMapper.toDTO(vente);
+    }
+
+//    @Override
+//    @Transactional(readOnly = true)
+//    public VenteResponseDTO getVenteById(Long id) {
+//        return venteRepository
+//                .findById(id)
+//                .map(venteMapper::toDTO)
+//                .orElseThrow(() -> new ResourceNotFoundException("Vente", id));
+//    }
     @Override
     @Transactional(readOnly = true)
     public VenteResponseDTO getVenteById(Long id) {
-        return venteRepository
+        Vente vente = venteRepository
                 .findById(id)
-                .map(venteMapper::toDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Vente", id));
+
+        VenteResponseDTO baseDTO = venteMapper.toDTO(vente);
+
+        Double revenuTotal = calculateRevenuTotal(vente);
+
+        return new VenteResponseDTO(
+                baseDTO.id(),
+                baseDTO.dateVente(),
+                baseDTO.prixUnitaire(),
+                baseDTO.client(),
+                revenuTotal
+        );
+    }
+    private Double calculateRevenuTotal(Vente vente) {
+
+        if (vente.getPrixUnitaire() == null || vente.getRecolte() == null) {
+            return 0.0;
+        }
+        Double quantiteTotale = vente.getRecolte().getQuantiteTotale();
+
+        return quantiteTotale * vente.getPrixUnitaire();
     }
 
     @Override
@@ -44,6 +82,8 @@ public class VenteServiceImpl implements VenteService {
                 .map(venteMapper::toDTO)
                 .toList();
     }
+
+
 
     @Override
     @Transactional(readOnly = true)

@@ -23,22 +23,15 @@ public class Ferme {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
     @NotBlank
     private String nom;
     @NotBlank
     private String localisation ;
     @Positive
     private double superficie;
-    @Future
+    @PastOrPresent
     @NotNull
     private LocalDate dateCreation;
-
-
-    @OneToMany(mappedBy = "ferme", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ferme", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Champ> champs;
-
-
-
 }

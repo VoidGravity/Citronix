@@ -6,6 +6,7 @@ import org.abdellah.citronix.DTO.request.FermeRequestDTO;
 import org.abdellah.citronix.DTO.response.FermeResponseDTO;
 import org.abdellah.citronix.service.FermeService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -31,9 +32,11 @@ public class FermeController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteFerme(@PathVariable Long id) {
+    public ResponseEntity<?> deleteFerme(@PathVariable Long id) {
         fermeService.deleteFerme(id);
+        return ResponseEntity.ok().build();
     }
+
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

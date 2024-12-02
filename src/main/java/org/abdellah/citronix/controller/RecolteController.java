@@ -49,15 +49,15 @@ public class RecolteController {
 //        return recolteService.getRecoltesByChampId(champId);
 //    }
 
-    @GetMapping("/saison/{saison}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<RecolteResponseDTO> getRecolteBySaison(@PathVariable Saison saison) {
-        return recolteService.getRecolteBySaison(saison);
-    }
-
-    @GetMapping("/{id}/quantite-totale")
-    @ResponseStatus(HttpStatus.OK)
-    public double getQuantiteTotale(@PathVariable Long id) {
-        return recolteService.calculateQuantiteTotale(id);
-    }
+//    @GetMapping("/saison/{saison}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<RecolteResponseDTO> getRecolteBySaison(@PathVariable Saison saison) {
+//        return recolteService.getRecolteBySaison(saison);
+//    }
+//
+//    @GetMapping("/{id}/quantite-totale")
+//    @ResponseStatus(HttpStatus.OK)
+//    public double getQuantiteTotale(@PathVariable Long id) {
+//        return recolteService.calculateQuantiteTotale(id);
+//    }
 }

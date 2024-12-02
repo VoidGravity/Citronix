@@ -8,6 +8,7 @@ import org.abdellah.citronix.service.ArbreService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -46,6 +47,12 @@ public class ArbreController {
     @ResponseStatus(HttpStatus.OK)
     public List<ArbreResponseDTO> getArbresByChamp(@PathVariable Long champId) {
         return arbreService.getArbresByChampId(champId);
+    }
+    @GetMapping("/all")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ArbreResponseDTO> getAllArbres() {
+
+        return arbreService.getAllArbres();
     }
 
     @GetMapping("/{id}/productivite")

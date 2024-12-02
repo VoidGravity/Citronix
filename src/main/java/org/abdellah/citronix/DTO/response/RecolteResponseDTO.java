@@ -12,7 +12,7 @@ public record RecolteResponseDTO(
         Long id,
         Saison saison,
         LocalDate dateRecolte,
-        Double quantiteTotale,
-        Long champId
+        Double quantiteTotale
+//        Long champId
 
 ) {}

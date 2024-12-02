@@ -23,4 +23,10 @@ public interface VenteMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "recolte", ignore = true)
     void updateEntityFromDTO(VenteRequestDTO dto, @MappingTarget Vente entity);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "recolte", ignore = true)
+    void updateEntityFromDTO(VenteResponseDTO dto, @MappingTarget Vente entity);
+
 }

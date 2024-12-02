@@ -7,6 +7,7 @@ import org.abdellah.citronix.exception.BusinessException;
 import org.abdellah.citronix.exception.ResourceNotFoundException;
 import org.abdellah.citronix.mapper.ArbreMapper;
 import org.abdellah.citronix.model.Arbre;
+import org.abdellah.citronix.model.ArbreStatus;
 import org.abdellah.citronix.model.Champ;
 import org.abdellah.citronix.repository.ArbreRepository;
 import org.abdellah.citronix.repository.ChampRepository;
@@ -32,26 +33,62 @@ public class ArbreServiceImpl implements ArbreService {
     private int getAge(LocalDate datePlantation) {
         return Period.between(datePlantation, LocalDate.now()).getYears();
     }
-    @Override
-    public ArbreResponseDTO createArbre(ArbreRequestDTO dto) {
-        Champ champ = champRepository.findById(dto.champId())
-                .orElseThrow(() -> new ResourceNotFoundException("Champ", dto.champId()));
+//    @Override
+//    public ArbreResponseDTO createArbre(ArbreRequestDTO dto) {
+//        Champ champ = champRepository.findById(dto.champId())
+//                .orElseThrow(() -> new ResourceNotFoundException("Champ", dto.champId()));
+//
+//        Month plantingMonth = dto.datePlantation().getMonth();
+//        if (plantingMonth != Month.MARCH && plantingMonth != Month.APRIL && plantingMonth != Month.MAY) {
+//            throw new BusinessException("Les arbres ne peuvent être plantés qu'entre mars et mai");
+//        }
+//
+//        int currentTrees = arbreRepository.countByChampId(dto.champId());
+//        int maxTrees = (int) (champ.getSuperficie() * 100); // 100 trees per hectare
+//        if (currentTrees >= maxTrees) {
+//            throw new BusinessException("Capacité maximale d'arbres atteinte pour ce champ");
+//        }
+//
+//        Arbre arbre = arbreMapper.toEntity(dto);
+//
+//        return arbreMapper.toDTO(arbreRepository.save(arbre));
+//    }
+@Override
+public ArbreResponseDTO createArbre(ArbreRequestDTO dto) {
+    Champ champ = champRepository.findById(dto.champId())
+            .orElseThrow(() -> new ResourceNotFoundException("Champ", dto.champId()));
 
-        Month plantingMonth = dto.datePlantation().getMonth();
-        if (plantingMonth != Month.MARCH && plantingMonth != Month.APRIL && plantingMonth != Month.MAY) {
-            throw new BusinessException("Les arbres ne peuvent être plantés qu'entre mars et mai");
-        }
-
-        int currentTrees = arbreRepository.countByChampId(dto.champId());
-        int maxTrees = (int) (champ.getSuperficie() * 100); // 100 trees per hectare
-        if (currentTrees >= maxTrees) {
-            throw new BusinessException("Capacité maximale d'arbres atteinte pour ce champ");
-        }
-
-        Arbre arbre = arbreMapper.toEntity(dto);
-
-        return arbreMapper.toDTO(arbreRepository.save(arbre));
+    Month plantingMonth = dto.datePlantation().getMonth();
+    if (plantingMonth != Month.MARCH && plantingMonth != Month.APRIL && plantingMonth != Month.MAY) {
+        throw new BusinessException("Les arbres ne peuvent être plantés qu'entre mars et mai");
     }
+
+    int currentTrees = arbreRepository.countByChampId(dto.champId());
+    int maxTrees = (int) (champ.getSuperficie() * 100);
+    if (currentTrees >= maxTrees) {
+        throw new BusinessException("Capacité maximale d'arbres atteinte pour ce champ");
+    }
+
+    Arbre arbre = arbreMapper.toEntity(dto);
+
+    arbre.setChamp(champ);
+
+    int age = getAge(dto.datePlantation());
+    ArbreStatus status;
+    if (age < 3) {
+        status = ArbreStatus.JEUNE;
+    } else if (age <= 10) {
+        status = ArbreStatus.MATURE;
+    } else if (age < 20) {
+        status = ArbreStatus.VIEUX;
+    } else {
+        status = ArbreStatus.NON_PRODUCTIF;
+    }
+    arbre.setStatus(status);
+
+    Arbre savedArbre = arbreRepository.save(arbre);
+    return arbreMapper.toDTO(savedArbre);
+}
 
     @Override
     public ArbreResponseDTO updateArbre(Long id, ArbreRequestDTO dto) {
@@ -81,6 +118,9 @@ public class ArbreServiceImpl implements ArbreService {
         return arbreRepository.findByChampId(champId).stream()
                 .map(arbreMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+    public List<ArbreResponseDTO> getAllArbres(){
+        return arbreRepository.getAllArbresWithRecolte();
     }
 
     @Override

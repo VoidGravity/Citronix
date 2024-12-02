@@ -45,4 +45,10 @@ public class VenteController {
     public void deleteVente(@PathVariable Long id) {
         venteService.deleteVente(id);
     }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public VenteResponseDTO updateVente(@PathVariable Long id, @Valid @RequestBody VenteRequestDTO request) {
+        return venteService.updateVente(id, request);
+    }
 }

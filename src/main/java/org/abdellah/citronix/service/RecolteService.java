@@ -15,4 +15,9 @@ public interface RecolteService {
     List<RecolteResponseDTO> getRecolteBySaison(Saison saison);
     double calculateQuantiteTotale(Long id);
 
+
+
+
+
+
 }

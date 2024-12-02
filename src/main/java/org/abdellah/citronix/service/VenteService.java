@@ -11,4 +11,6 @@ public interface VenteService {
     List<VenteResponseDTO> getAllVentes();
     List<VenteResponseDTO> getVentesByRecolte(Long recolteId);
     void deleteVente(Long id);
+    VenteResponseDTO updateVente(Long id, VenteRequestDTO request);
+
 }

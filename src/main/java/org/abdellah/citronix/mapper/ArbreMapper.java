@@ -7,7 +7,7 @@ import org.abdellah.citronix.DTO.response.ArbreResponseDTO;
 import org.abdellah.citronix.util.ArbreUtil;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring", imports = {ArbreUtil.class})  // Added imports
+@Mapper(componentModel = "spring", imports = {ArbreUtil.class})
 public interface ArbreMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", ignore = true)
@@ -19,7 +19,7 @@ public interface ArbreMapper {
         return champId != null ? Champ.builder().id(champId).build() : null;
     }
 
-    @Mapping(target = "age", expression = "java(org.abdellah.citronix.util.ArbreUtil.calculateAge(arbre.getDatePlantation()))")  // Use fully qualified name
+    @Mapping(target = "age", expression = "java(org.abdellah.citronix.util.ArbreUtil.calculateAge(arbre.getDatePlantation()))")
     @Mapping(target = "productiviteParSaison", expression = "java(arbre.getStatus().getProductionParSaison())")
     @Mapping(target = "champId", expression = "java(arbre.getChamp() != null ? arbre.getChamp().getId() : null)")
     ArbreResponseDTO toDTO(Arbre arbre);

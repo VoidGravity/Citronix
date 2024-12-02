@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 public class FermeServiceImpl implements FermeService {
     private final FermeRepository fermeRepository;
     private final FermeMapper fermeMapper;
+    private final ChampRepository champRepository;
+
 
     @Override
     public FermeResponseDTO createFerme(FermeRequestDTO dto) {
@@ -43,7 +45,15 @@ public class FermeServiceImpl implements FermeService {
             throw new ResourceNotFoundException("Ferme", id);
         }
         fermeRepository.deleteById(id);
+
     }
+//    @Override
+//    public void deleteFerme(Long id) {
+//        Ferme ferme = fermeRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("Ferme", id));
+//        champRepository.deleteById(id);
+//        fermeRepository.deleteById(id);
+//    }
 
     @Override
     @Transactional(readOnly = true)

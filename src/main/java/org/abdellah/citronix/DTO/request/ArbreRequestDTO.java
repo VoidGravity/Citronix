@@ -6,8 +6,8 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
 public record ArbreRequestDTO(
-        @NotBlank(message = "Le nom de l'arbre est obligatoire")
-        String nom,
+//        @NotBlank(message = "Le nom de l'arbre est obligatoire")
+//        String nom,
 
         @NotNull(message = "La date de plantation est obligatoire")
         @PastOrPresent(message = "La date de plantation ne peut pas être dans le futur")

@@ -1,7 +1,10 @@
 package org.abdellah.citronix.DTO.request;
 
 import jakarta.validation.constraints.*;
+import lombok.Builder;
+
 import java.time.LocalDate;
+@Builder
 
 public record FermeRequestDTO(
         @NotBlank(message = "Le nom de la ferme est obligatoire")
@@ -19,3 +22,4 @@ public record FermeRequestDTO(
         @PastOrPresent(message = "La date de création ne peut pas être dans le futur")
         LocalDate dateCreation
 ) {}
+

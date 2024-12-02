@@ -1,10 +1,7 @@
 package org.abdellah.citronix.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.List;
@@ -25,7 +22,7 @@ public class Champ {
     @NotBlank
     private String nom;
     @Positive
-    @Min(1000)
+    @DecimalMin(value = "0.1", message = "La superficie minimale est de 0.1 hectare")
     private Double superficie;
 
 
@@ -33,7 +30,8 @@ public class Champ {
     @JoinColumn(name = "ferme_id")
     private Ferme ferme;
 
-    @OneToMany(mappedBy = "champ", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "champ", cascade = CascadeType.ALL, orphanRemoval = true)
+
     private List<Arbre> arbres;
 
 }

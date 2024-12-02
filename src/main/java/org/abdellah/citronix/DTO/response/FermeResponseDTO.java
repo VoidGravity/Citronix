@@ -10,6 +10,6 @@ public record FermeResponseDTO(
         String localisation,
         Double superficie,
         LocalDate dateCreation,
-        Double superficieDisponible,
+//        Double superficieDisponible,
         int nombreChamps
 ) {}

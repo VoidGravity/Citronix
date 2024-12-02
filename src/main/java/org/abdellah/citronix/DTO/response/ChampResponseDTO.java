@@ -8,7 +8,7 @@ public record ChampResponseDTO(
         String nom,
         Double superficie,
         int nombreArbres,
-        int capaciteMaxArbres,
-        Double tauxOccupation,
-        Long fermeId
+        int capaciteMaxArbres
+//        Double tauxOccupation,
+//        Long fermeId
 ) {}

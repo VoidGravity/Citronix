@@ -10,6 +10,6 @@ public record VenteResponseDTO(
         LocalDate dateVente,
         Double prixUnitaire,
         String client,
-        Double revenuTotal,
-        Long recolteId
+        Double revenuTotal
+//        Long recolteId
 ) {}
